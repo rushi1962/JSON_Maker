@@ -5,16 +5,17 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
+//This window will find all the classes with JSONConvertable attribute and will show as options to the user
+//as for which class do they want to make JSON data file of.
 public class JSONDataClassSelector : EditorWindow
 {
-    private List<Type> markedTypes = new List<Type>();
-    private Vector2 scroll;
+    private List<Type> MarkedTypes = new List<Type>();
+    private Vector2 Scroll;
 
     [MenuItem("Window/JSON Maker Widnow")]
-
     public static void ShowWindow()
     {
-        GetWindow<JSONDataClassSelector>("Select Class");
+        GetWindow<JSONDataClassSelector>("JSON Maker Widnow");
     }
 
     private void OnEnable()
@@ -24,11 +25,13 @@ public class JSONDataClassSelector : EditorWindow
 
     private void RefreshClassList()
     {
+        //Get all types in the whole code base
         var allTypes = AppDomain.CurrentDomain
             .GetAssemblies()
             .SelectMany(a => a.GetTypes());
 
-        markedTypes = allTypes
+        //Find classes which have JSONConvertable attribute and are serializable
+        MarkedTypes = allTypes
             .Where(t =>
                 t.IsClass && t.IsSerializable &&
                 t.GetCustomAttribute<JSONConvertableAttribute>() != null)
@@ -41,12 +44,14 @@ public class JSONDataClassSelector : EditorWindow
         GUILayout.Label("Select Class", EditorStyles.boldLabel);
         GUILayout.Space(4);
 
-        scroll = GUILayout.BeginScrollView(scroll);
+        Scroll = GUILayout.BeginScrollView(Scroll);
 
-        foreach (var type in markedTypes)
+        //Add buttons for each class type
+        foreach (var type in MarkedTypes)
         {
             if (GUILayout.Button(type.Name))
             {
+                //Pass the class type to the JSON maker window and open that editor window
                 JSONMakerWindow.Show(type);
                 Close();
             }

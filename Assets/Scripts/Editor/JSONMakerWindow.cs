@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
 public class JSONMakerWindow : EditorWindow
 {
-    private Dictionary<object, bool> foldouts = new Dictionary<object, bool>();
+    private Dictionary<object, bool> Foldouts = new Dictionary<object, bool>();
     private List<object> ClassInstances;
     private Type JSONDataClassType;
     private string JSONFilePath = "Assets/Data/JSONFiles/JSONData.txt";
@@ -27,6 +26,7 @@ public class JSONMakerWindow : EditorWindow
 
     private void OnGUI()
     {
+        //Give a text field for JSON file path
         JSONFilePath = EditorGUILayout.TextField("JSON file path", JSONFilePath);
         GUILayout.Space(5);
 
@@ -35,12 +35,13 @@ public class JSONMakerWindow : EditorWindow
             int InstanceCount = 0;
             foreach(var item in ClassInstances)
             {
-                if (!foldouts.ContainsKey(item))
-                    foldouts[item] = true;
+                //Foldouts for class instances
+                if (!Foldouts.ContainsKey(item))
+                    Foldouts[item] = true;
 
-                foldouts[item] = EditorGUILayout.Foldout(foldouts[item], "Instance_"+InstanceCount.ToString());
+                Foldouts[item] = EditorGUILayout.Foldout(Foldouts[item], "Instance_"+InstanceCount.ToString());
 
-                if (foldouts[item])
+                if (Foldouts[item])
                 {
                     EditorGUI.indentLevel++;
 
@@ -79,6 +80,7 @@ public class JSONMakerWindow : EditorWindow
 
         GUILayout.BeginHorizontal();
 
+        //Add required buttons according to the number of class instances and if user wants to create a new file or load an existing one.
         if(ClassInstances.Count <= 0)
         {
             if (GUILayout.Button("Create New File"))
@@ -111,33 +113,16 @@ public class JSONMakerWindow : EditorWindow
 
         if (ClassInstances.Count > 0 && GUILayout.Button("Save JSON File"))
         {
-            string JSONString = "$";
-
-            foreach(var Instance in ClassInstances)
-            {
-                JSONString += JsonUtility.ToJson(Instance);
-                JSONString += "$";
-            }
-
-            File.WriteAllText(JSONFilePath, JSONString);
+            JSONUtilityLibrary.SaveListASJSONString(ClassInstances, JSONFilePath);
             AssetDatabase.Refresh();
             Close();
         }
     }
 
+    //Populates instances list with JSON string from existing JSON file.
     private void PopulateClassInstances()
     {
-        if (!File.Exists(JSONFilePath))
-            Debug.LogError("This file doesn't exist : " + JSONFilePath);
-
-        string JSONString = File.ReadAllText(JSONFilePath);
-        string[] JSONStrings = JSONString.Split("$");
-
-        for (int i = 1; i < JSONStrings.Length - 1; i++)
-        {
-            object data = JsonUtility.FromJson(JSONStrings[i], JSONDataClassType);
-            var typedInstance = Convert.ChangeType(data, JSONDataClassType);
-            ClassInstances.Add(typedInstance);
-        }
+       ClassInstances.Clear();
+        ClassInstances = JSONUtilityLibrary.ConvertJSONStringToObjectsList(JSONFilePath, JSONDataClassType);
     }
 }

@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
+//Example data class, with JSONConvertable attribute
 [JSONConvertable, Serializable]
 public class PlayerData
 {
