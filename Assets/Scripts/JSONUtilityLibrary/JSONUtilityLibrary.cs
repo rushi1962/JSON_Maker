@@ -34,14 +34,11 @@ public class JSONUtilityLibrary
         return typedInstance;
     }
 
-    public static List<object> ConvertJSONStringToObjectsList(string JSONFilePath, Type ObjectType)
+    public static void ConvertJSONStringToObjectsList(string JSONFilePath, Type ObjectType, List<object> ObjectsList)
     {
-        List<object> ObjectsList = new List<object>();
-
         if (!File.Exists(JSONFilePath))
         {
             Debug.LogError("This file doesn't exist : " + JSONFilePath);
-            return ObjectsList;
         }            
 
         string JSONString = File.ReadAllText(JSONFilePath);
@@ -52,7 +49,5 @@ public class JSONUtilityLibrary
             var typedInstance = JSONUtilityLibrary.ConvertJSONStringToObject(JSONStrings[i], ObjectType);
             ObjectsList.Add(typedInstance);
         }
-
-        return ObjectsList;
     }
 }

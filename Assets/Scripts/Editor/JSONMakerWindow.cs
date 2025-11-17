@@ -123,6 +123,6 @@ public class JSONMakerWindow : EditorWindow
     private void PopulateClassInstances()
     {
        ClassInstances.Clear();
-        ClassInstances = JSONUtilityLibrary.ConvertJSONStringToObjectsList(JSONFilePath, JSONDataClassType);
+       JSONUtilityLibrary.ConvertJSONStringToObjectsList(JSONFilePath, JSONDataClassType, ClassInstances);
     }
 }
