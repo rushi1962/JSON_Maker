@@ -1,4 +1,4 @@
-🎬 JSON Maker (Unity)
+📋 JSON Maker (Unity)
 =
 
 A designer-friendly extension tool to make JSON data files that allows non-technical people to create JSON text files from data classes with custom attribute, within Unity itself.
