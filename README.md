@@ -31,7 +31,7 @@ JSON Maker window
 - Allow user to load existing JSON file at the mentioned path.
 
 
-Glimps At The Tool Inside Unity
+👀 Glimps At The Tool Inside Unity
 =
 <img width="546" height="728" alt="image" src="https://github.com/user-attachments/assets/e8b9a2c6-4225-41cf-8152-30d90da97cee" />
 
