@@ -77,7 +77,7 @@ This project was built to help non -technical people to create JSON files within
 =
 Rushikesh Charapale
 
-Senior Gameplay / Tools Developer
+Gameplay / Tools Developer
 
 🔗 GitHub: <[rushi1962](https://github.com/rushi1962)>
 
